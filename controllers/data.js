@@ -1,0 +1,122 @@
+import models from '../models';
+function paddy(num, padlen, padchar) {
+    var pad_char = typeof padchar !== 'undefined' ? padchar : '0';
+    var pad = new Array(1 + padlen).join(pad_char);
+    return (pad + num).slice(-pad.length);
+}
+export default {
+    add: async (req,res,next) =>{
+        try {
+            const reg = await models.data_esquema.create(req.body);
+            res.status(200).json(reg);
+        } catch (e){
+            res.status(500).send({
+                message:'Ocurrió un error al intentar agregar data_esquema.'+e
+            });
+            next(e);
+        } 
+    },
+    query: async (req,res,next) => {
+        try {
+            const reg=await models.data_esquema.findOne({$and:[{"codigoUsuario":req.query.codigoUsuario},{"codigoDistribuidor":req.query.codigoDistribuidor}]})
+            .populate([ 
+                {path:'codigoDistribuidor', model:'distribuidor'},
+                {path:'codigoUsuario', model:'usuario'},
+                ])
+
+            if (!reg){
+                res.status(404).send({
+                    message: 'El registro no existe.'
+                });
+            } else{
+                let secuencia = paddy(parseInt(reg.secuencial),9)
+                let ptoEmision = paddy(parseInt(reg.ptoEmision),3)
+                let data = {
+                    _id:reg._id,
+                    secuencial:secuencia,
+                    ptoEmision:ptoEmision
+                }
+                res.status(200).json(data);
+            }
+        } catch(e){
+            res.status(500).send({
+                message:'Ocurrió un error al buscar el registro de data_esquema.'
+            });
+            next(e);
+        }
+    },
+    list: async (req,res,next) => {
+        try {
+            let valor=req.query.valor;
+            const reg=await models.data_esquema.find({$or:[{'descripcion':new RegExp(valor,'i')}]},{createdAt:0})
+            .sort({'descripcion':1});
+            res.status(200).json(reg);
+        } catch(e){
+            res.status(500).send({
+                message:'Ocurrió un error al intentar listar los data_esquemaes.'
+            });
+            next(e);
+        }
+    },
+    update: async (req,res,next) => {
+        try {         
+            const reg = await models.data_esquema.findByIdAndUpdate({_id:req.body._id},
+                {secuencial:req.body.secuencial,
+                ptoEmision:req.body.ptoEmision});
+                    
+            res.status(200).json("ok");
+        } catch(e){
+            res.status(500).send({
+                message:'Ocurrió un error al actualizar el data_esquema.'
+            });
+            next(e);
+        }
+    },
+    updateSecuencial: async (req,res,next) => {
+        try {        
+            const data = await models.data_esquema.findOne({_id:req.body._id})
+             let val = parseInt(data.secuencial)+1
+            const reg = await models.data_esquema.findByIdAndUpdate({_id:req.body._id},
+                {secuencial:val});
+            res.status(200).json(reg);
+        } catch(e){
+            res.status(500).send({
+                message:'Ocurrió un error al actualizar el data_esquema.'
+            });
+            next(e);
+        }
+    },
+    remove: async (req,res,next) => {
+        try {
+            const reg = await models.data_esquema.findByIdAndDelete({_id:req.query._id});
+            res.status(200).json(reg);
+        } catch(e){
+            res.status(500).send({
+                message:'Ocurrió un error al intentar eliminar el data_esquema.'
+            });
+            next(e);
+        }
+    },
+    activate: async (req,res,next) => {
+        try {
+            const reg = await models.data_esquema.findByIdAndUpdate({_id:req.body._id},{estado:1});
+            res.status(200).json(reg);
+        } catch(e){
+            res.status(500).send({
+                message:'Ocurrió un error al intentar activar el data_esquema.'
+            });
+            next(e);
+        }
+    },
+    deactivate:async (req,res,next) => {
+        try {
+            const reg = await models.data_esquema.findByIdAndUpdate({_id:req.body._id},{estado:0});
+            res.status(200).json(reg);
+        } catch(e){
+            res.status(500).send({
+                message:'Ocurrió un error al intentar desactivar el data_esquema.'
+            });
+            next(e);
+        }
+    }
+}
