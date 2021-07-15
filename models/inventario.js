@@ -14,6 +14,7 @@ const Esquema = new Schema({
     pvm:{type:Number,required:true},
     costoNeto:{type:Number,required:true},
     percha:{type:String},
+    numComprobante:{type:String},
     codigoUsuario:{type: Schema.ObjectId, ref:'usuarios'},
     codigoBodega :{type: Schema.ObjectId, ref:'bodegas'}, 
     codigoFabricante :{type: Schema.ObjectId, ref:'fabricantes'},

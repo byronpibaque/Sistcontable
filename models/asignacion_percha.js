@@ -67,7 +67,7 @@ const esquema = new Schema({
     required: true,
   },
   codigoBodega :{type: Schema.ObjectId, ref:'bodegas'},
-  estado:{type:Number,default:1},
+  estado:{type:Number,default:0},
   createdAt: { type: Date, default: Date.now },
 });
 const asignacionPercha = mongoose.model("asignacionPercha", esquema);

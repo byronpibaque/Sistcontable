@@ -25,10 +25,10 @@ async function eliminar(numComprobante,codigoDistribuidor) {
     try {
         const resultado = await models.cuarentenas.deleteOne({$and:[{numComprobante:numComprobante},{codigoDistribuidor:codigoDistribuidor}]})
         .then(async (result) => {
-            // console.log("Cuarentena OK! \n"+result);
+             console.log("Cuarentena OK! \n"+result);
             const resultado2 = await models.asignacionPercha.deleteOne({$and:[{numComprobante:numComprobante},{codigoDistribuidor:codigoDistribuidor}]})
             .then(async(result) => {
-                // console.log("Asignacion OK! \n"+result);
+             console.log("Asignacion OK! \n"+result);
                 return true 
             }).catch((err) => {
                 console.log(err);
@@ -44,6 +44,20 @@ async function eliminar(numComprobante,codigoDistribuidor) {
         return false
     } 
 } 
+async function disminuirStock(codigoArticulo,costoNeto1,pvm1,pvp1,punit1,fTotales) {
+    let {fraccionesTotales} = await models.inventario_esquema.findOne({_id:codigoArticulo})
+    let nfraccionesTotales = parseInt(fraccionesTotales)-parseInt(fTotales)
+    const reg = await models.inventario_esquema.findByIdAndUpdate(
+        {_id:codigoArticulo},{
+            fraccionesTotales:nfraccionesTotales,
+            percha:"",
+            numComprobante:""
+        }).then(async (result) => {
+            return result
+        }).catch((err) => {
+            return err
+        }); 
+  }
 export default {
     add: async (req,res,next) =>{
         try {
@@ -191,13 +205,21 @@ export default {
                 if(err) return err
                 if(data){
                     const verificacionEliminar = eliminar(data.numComprobante,data.codigoDistribuidor)
-                    if(verificacionEliminar){
-                        res.status(200).json("ok");
-                    }else{
-                        res.status(500).send({
-                            message:'Ocurrió un error al intentar eliminar el registro de la cuarentena.'
-                        }); 
-                    }
+                    data.detalles.forEach(l => {
+                        const disminuir = disminuirStock(l._id,l.costoNeto,l.pvm,l.pvp,l.punit,l.fraccionesTotales)
+                       disminuir.then((result) => {
+                        if(verificacionEliminar){
+                            res.status(200).json("ok");
+                        }else{
+                            res.status(500).send({
+                                message:'Ocurrió un error al intentar eliminar el registro de la cuarentena.'
+                            }); 
+                        }
+                       }).catch((err) => {
+                              return err                
+                       });
+                      });
+                    
                 }
             })
            
