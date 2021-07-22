@@ -63,6 +63,7 @@ export default {
         try {
             const reg = await models.compras.create(req.body);
             const agregarCuarentena = await models.cuarentenas.create({
+                
               numComprobante:req.body.numComprobante,
               descripcion:req.body.descripcion,
               detalles:req.body.detalles,
@@ -104,6 +105,35 @@ export default {
         } catch(e){
             res.status(500).send({
                 message:'Ocurrió un error al buscar el registro de compras.'
+            });
+            next(e);
+        }
+    },
+    queryReten: async (req,res,next) => {
+        try {
+            let valor = req.query.valor
+            const reg=await models.compras.find(
+                {$and:[{"codigoDistribuidor":req.query.codigoDistribuidor},
+                {$or:[
+                    {'codigoProveedor.ruc': new RegExp('^'+valor,'i')},
+                    {'codigoProveedor.ruc':  new RegExp(valor+'$','i')},
+                    {'codigoProveedor.ruc':new RegExp(valor,'i')},
+                    {'numComprobante':new RegExp(valor,'i')},
+                    {'numComprobante': new RegExp('^'+valor,'i')},
+                    {'numComprobante':  new RegExp(valor+'$','i')},    
+                ]}]})
+                .populate([
+                {path:'codigoBodega', model:'bodega'},
+                {path:'codigoUsuario', model:'usuario'},
+                {path:'codigoProveedor', model:'proveedor'},
+                {path:'codigoDistribuidor', model:'distribuidor'},
+                ])
+       
+                res.status(200).json(reg);
+          
+        } catch(e){
+            res.status(500).send({
+                message:'Ocurrió un error al buscar el registro de compras.'+e
             });
             next(e);
         }

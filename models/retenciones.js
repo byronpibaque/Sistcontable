@@ -1,26 +1,27 @@
 import mongoose, { Schema } from "mongoose";
 const ingresoSchema = new Schema({
-  numComprobante: { type: String, required: true },
-  fechaFactura: { type: Date, required: true },
+  secuencial: { type: String, required: true },
+  ptoEmi: { type: String, required: true },
   totalImpuesto: { type: Number, required: true },
-  totalDescuento: { type: Number, required: true },
+  subtotal: { type: Number, required: true },
   total: { type: Number, required: true },
-  detalles: [
+  impuestos: [
     {
+      codigo: { type: String, required: true },
       codigoRetencion: { type: String, required: true },
-      codigoImpuesto: { type: String, required: true },
       baseImponible: { type: Number, required: true },
-      porcentaje: { type: Number, required: true },
+      porcentajeRetener: { type: Number, required: true },
       valorRetenido: { type: Number, required: true },
-      codigoTipoDocumento: { type: String, required: true },
-      fechaEmision: { type: Date, required: true },
+      codDocSustento: { type: String, required: true },
+      numDocSustento: { type: String, required: true },
+      fechaEmisionDocSustento:{ type: String, required: true },
     },
   ],
   periodoFiscal: { type: String },
   claveAcceso: { type: String },
   codigoCompra: { type: Schema.ObjectId, ref: "compras" },
   codigoUsuario: { type: Schema.ObjectId, ref: "usuarios", required: true },
-  codigoProveedor: { type: Schema.ObjectId, ref: "proveedors", required: true },
+  codigoProveedor: { type: Schema.ObjectId, ref: "proveedors", },
   codigoDistribuidor: {
     type: Schema.ObjectId,
     ref: "distribuidors",

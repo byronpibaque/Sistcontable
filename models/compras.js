@@ -1,10 +1,13 @@
 import mongoose, { Schema } from "mongoose";
 const ingresoSchema = new Schema({
+  claveAcceso: { type: String, required: true },
   numComprobante: { type: String, required: true },
   fechaFactura: { type: Date, required: true },
   totalImpuesto: { type: Number, required: true },
+  totalRetenido:{ type: Number, required: true },
   totalDescuento: { type: Number, required: true },
   total: { type: Number, required: true },
+  subTotal: { type: Number, required: true },
   detalles: [
     {
       _id: {

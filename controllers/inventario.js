@@ -113,6 +113,7 @@ export default {
                 {path:'codigoProducto', model:'producto'},
                 ])
             .sort({'descripcion':1});
+            await models.inventario_esquema.populate(reg,{path:"codigoProducto._id.codigoConcentracion",select:{descripcion:1}})
             res.status(200).json(reg);
         } catch(e){
             res.status(500).send({

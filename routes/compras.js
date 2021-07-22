@@ -11,6 +11,7 @@ router.post('/add',Controlador.add);
 
 // router.get('/consulta',Controlador.buscarCliente);
 router.get('/query',Controlador.query);
+router.get('/queryR',Controlador.queryReten);
 router.get('/list',Controlador.list); 
 // router.put('/actualizar',Controlador.update);
 

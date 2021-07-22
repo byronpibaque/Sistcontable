@@ -23,6 +23,7 @@ import data from './data';
 import cliente from './cliente'
 import perchas from './perchas'
 import compras from './compras'
+import retenciones from './retencion'
 import curentena from './cuarentena'
 import asignacionPercha from './asignacionPercha'
 
@@ -56,6 +57,7 @@ router.use('/inventario',inventario_router)
 router.use('/cliente',cliente)
 //--------------COMPRAS-------------------//
 router.use('/compras',compras)
+router.use('/retenciones',retenciones)
 router.use('/cuarentena',curentena)
 router.use('/asignacionpercha',asignacionPercha)
 

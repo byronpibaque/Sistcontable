@@ -1,6 +1,6 @@
 import routerx from 'express-promise-router';
 
-import Controlador from '../controllers/data';
+import Controlador from '../controllers/retenciones_controlador';
 
 
 const router=routerx();
@@ -8,11 +8,9 @@ const router=routerx();
 
  
 router.post('/add',Controlador.add);
-router.get('/queryId',Controlador.queryxid);
 router.get('/query',Controlador.query);
 router.get('/list',Controlador.list); 
-router.put('/actualizar',Controlador.update);
-router.put('/actualizarSecuencial',Controlador.updateSecuencial);
+// router.put('/actualizar',Controlador.update);
 router.put('/activate',Controlador.activate);
 router.put('/deactivate',Controlador.deactivate);
 router.delete('/remove',Controlador.remove);

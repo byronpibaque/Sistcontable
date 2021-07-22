@@ -2,9 +2,11 @@ import mongoose,{Schema} from 'mongoose';
 
 const Esquema = new Schema({ 
   
-    secuencial:{type:Number,required:true},
+    secuenciales:[{
+        secuencial:{type:Number,required:true},
+        documento:{type:String},
+    }],
     ptoEmision:{type:Number,required:true},
-    
     codigoUsuario:{type: Schema.ObjectId, ref:'usuarios'},
     codigoDistribuidor :{type: Schema.ObjectId, ref:'distribuidors'}, 
   

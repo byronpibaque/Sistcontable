@@ -16,9 +16,10 @@ export default {
             next(e);
         } 
     },
-    query: async (req,res,next) => {
+    queryxid: async (req,res,next) => {
         try {
-            const reg=await models.data_esquema.findOne({$and:[{"codigoUsuario":req.query.codigoUsuario},{"codigoDistribuidor":req.query.codigoDistribuidor}]})
+            const reg=await models.data_esquema
+            .findOne({"_id":req.query._id})
             .populate([ 
                 {path:'codigoDistribuidor', model:'distribuidor'},
                 {path:'codigoUsuario', model:'usuario'},
@@ -29,14 +30,8 @@ export default {
                     message: 'El registro no existe.'
                 });
             } else{
-                let secuencia = paddy(parseInt(reg.secuencial),9)
-                let ptoEmision = paddy(parseInt(reg.ptoEmision),3)
-                let data = {
-                    _id:reg._id,
-                    secuencial:secuencia,
-                    ptoEmision:ptoEmision
-                }
-                res.status(200).json(data);
+                
+                res.status(200).json(reg);
             }
         } catch(e){
             res.status(500).send({
@@ -45,11 +40,53 @@ export default {
             next(e);
         }
     },
+    query: async (req,res,next) => {
+        try {
+            const reg=await models.data_esquema
+            .find({$and:[{"codigoUsuario":req.query.codigoUsuario},{"codigoDistribuidor":req.query.codigoDistribuidor}]})
+            .populate([ 
+                {path:'codigoDistribuidor', model:'distribuidor'},
+                {path:'codigoUsuario', model:'usuario'},
+                ])
+                   
+            if (!reg){
+                res.status(404).send({
+                    message: 'El registro no existe.'
+                });
+            } else{
+                for (let index = 0; index < reg.length; index++) {
+                    const element = reg[index];
+                    element.secuenciales.forEach(x => {
+                        if (x.documento==req.query.documento) {
+                            let secuencia = paddy(parseInt(x.secuencial),9)
+                            let ptoEmision = paddy(parseInt(element.ptoEmision),3)
+                                let data = {
+                                    _id:reg._id,
+                                    secuencial:secuencia,
+                                    ptoEmision:ptoEmision
+                                }
+                                res.status(200).json(data);
+                        }
+                    });
+                }
+         
+            
+            }
+        } catch(e){
+            res.status(500).send({
+                message:'Ocurrió un error al buscar el registro de data_esquema.'+e
+            });
+            next(e);
+        }
+    },
     list: async (req,res,next) => {
         try {
             let valor=req.query.valor;
-            const reg=await models.data_esquema.find({$or:[{'descripcion':new RegExp(valor,'i')}]},{createdAt:0})
-            .sort({'descripcion':1});
+            const reg=await models.data_esquema.find()
+            .populate([ 
+                {path:'codigoDistribuidor', model:'distribuidor'},
+                {path:'codigoUsuario', model:'usuario'},
+                ])
             res.status(200).json(reg);
         } catch(e){
             res.status(500).send({
@@ -61,8 +98,12 @@ export default {
     update: async (req,res,next) => {
         try {         
             const reg = await models.data_esquema.findByIdAndUpdate({_id:req.body._id},
-                {secuencial:req.body.secuencial,
-                ptoEmision:req.body.ptoEmision});
+            {
+                secuenciales:req.body.secuenciales,
+                ptoEmision:req.body.ptoEmision,
+                codigoDistribuidor:req.body.codigoDistribuidor,
+                codigoUsuario:req.body.codigoUsuario
+            });
                     
             res.status(200).json("ok");
         } catch(e){
@@ -75,13 +116,26 @@ export default {
     updateSecuencial: async (req,res,next) => {
         try {        
             const data = await models.data_esquema.findOne({_id:req.body._id})
-             let val = parseInt(data.secuencial)+1
-            const reg = await models.data_esquema.findByIdAndUpdate({_id:req.body._id},
-                {secuencial:val});
-            res.status(200).json(reg);
+            let val=0
+            data.secuenciales.forEach(element => {
+           
+                if(element.documento==req.body.documento){
+                    val = parseInt(element.secuencial)+1
+                     models.data_esquema
+                    .update({"secuenciales._id":element._id},{$set:{"secuenciales.$.secuencial":val,}},function (err,dat) {
+                        if(err) return err;
+                        if(dat){
+                          
+                             res.status(200).json("ok");
+                        }
+                    });    
+                }
+            });
+            
+           
         } catch(e){
             res.status(500).send({
-                message:'Ocurrió un error al actualizar el data_esquema.'
+                message:'Ocurrió un error al actualizar el data_esquema.'+e
             });
             next(e);
         }
