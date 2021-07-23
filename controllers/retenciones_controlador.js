@@ -1,12 +1,8 @@
 import models from '../models';
 async function agregarTotalRetenido(_idCompra,TotalRetenido) {
-    let {fraccionesTotales} = await models.inventario_esquema.findOne({_id:codigoArticulo})
-    let nfraccionesTotales = parseInt(fraccionesTotales)-parseInt(fTotales)
-    const reg = await models.inventario_esquema.findByIdAndUpdate(
-        {_id:codigoArticulo},{
-            fraccionesTotales:nfraccionesTotales,
-            percha:"",
-            numComprobante:""
+    const reg = await models.compras.findByIdAndUpdate(
+        {_id:_idCompra},{
+            totalRetenido:TotalRetenido,
         }).then(async (result) => {
             return result
         }).catch((err) => {
@@ -19,7 +15,7 @@ export default {
             const reg = await models.retenciones.create(req.body);
             let totalValRet=0
             req.body.impuestos.forEach(x => {
-                totalValReT=totalValRet+parseFloat(x.valorRetenido)
+                totalValRet=totalValRet+parseFloat(x.valorRetenido)
             });
             const fx  = agregarTotalRetenido(req.body.codigoCompra,totalValRet)
             fx.then((result) => {

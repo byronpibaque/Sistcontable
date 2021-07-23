@@ -55,6 +55,8 @@ export default {
             .find(
             {$and:[{"codigoBodega":req.query.codigoBodega},
             {$or:[
+                {'codigoBarra':producto},
+                {'codigoLote':producto},
                 {'codigoProducto.descripcion': new RegExp('^'+producto,'i')},
                 {'codigoProducto.descripcion':  new RegExp(producto+'$','i')},
                 {'codigoProducto.descripcion':new RegExp(producto,'i')},

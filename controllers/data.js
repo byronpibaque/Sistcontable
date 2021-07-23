@@ -56,15 +56,17 @@ export default {
             } else{
                 for (let index = 0; index < reg.length; index++) {
                     const element = reg[index];
+                 
                     element.secuenciales.forEach(x => {
                         if (x.documento==req.query.documento) {
                             let secuencia = paddy(parseInt(x.secuencial),9)
                             let ptoEmision = paddy(parseInt(element.ptoEmision),3)
                                 let data = {
-                                    _id:reg._id,
+                                    _id:element._id,
                                     secuencial:secuencia,
                                     ptoEmision:ptoEmision
                                 }
+                                console.log(data);
                                 res.status(200).json(data);
                         }
                     });
@@ -118,19 +120,22 @@ export default {
             const data = await models.data_esquema.findOne({_id:req.body._id})
             let val=0
             data.secuenciales.forEach(element => {
-           
-                if(element.documento==req.body.documento){
+                if (element.documento==req.body.documento) {
                     val = parseInt(element.secuencial)+1
-                     models.data_esquema
-                    .update({"secuenciales._id":element._id},{$set:{"secuenciales.$.secuencial":val,}},function (err,dat) {
-                        if(err) return err;
-                        if(dat){
-                          
-                             res.status(200).json("ok");
-                        }
-                    });    
+                    models.data_esquema
+                   .update({"secuenciales._id":element._id},{$set:{"secuenciales.$.secuencial":val,}},
+                   function (err,dat) {
+                       if(err) return res.status(500).send({
+                        message:'Ocurrió un error al actualizar el data_esquema.'+err
+                    });
+                       if(dat){
+                            res.status(200).json("ok");
+                       }
+                   });   
                 }
             });
+   
+    
             
            
         } catch(e){
