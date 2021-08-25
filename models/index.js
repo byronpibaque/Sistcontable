@@ -23,8 +23,10 @@ import compras from './compras';
 import retenciones from './retenciones';
 import cuarentenas from './cuarentena';
 import perchas from './prechas';
-import asignacionPercha from './asignacion_percha'
+import asignacionPercha from './asignacion_percha';
+import cuentasporpagar from './cuentasporpagar';
 export default {
+    cuentasporpagar,
     asignacionPercha,
     perchas,
     compras,

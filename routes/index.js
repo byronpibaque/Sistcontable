@@ -26,6 +26,7 @@ import compras from './compras'
 import retenciones from './retencion'
 import curentena from './cuarentena'
 import asignacionPercha from './asignacionPercha'
+import cuentasporpagar from './cuentasporpagar'
 
 const router=routerx();
 router.use('/data',data)
@@ -58,6 +59,7 @@ router.use('/cliente',cliente)
 //--------------COMPRAS-------------------//
 router.use('/compras',compras)
 router.use('/retenciones',retenciones)
+router.use('/cuentasporpagar',cuentasporpagar)
 router.use('/cuarentena',curentena)
 router.use('/asignacionpercha',asignacionPercha)
 

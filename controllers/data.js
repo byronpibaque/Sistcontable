@@ -14,13 +14,13 @@ export default {
                 message:'Ocurrió un error al intentar agregar data_esquema.'+e
             });
             next(e);
-        } 
+        }
     },
     queryxid: async (req,res,next) => {
         try {
             const reg=await models.data_esquema
             .findOne({"_id":req.query._id})
-            .populate([ 
+            .populate([
                 {path:'codigoDistribuidor', model:'distribuidor'},
                 {path:'codigoUsuario', model:'usuario'},
                 ])
@@ -30,7 +30,7 @@ export default {
                     message: 'El registro no existe.'
                 });
             } else{
-                
+
                 res.status(200).json(reg);
             }
         } catch(e){
@@ -43,12 +43,15 @@ export default {
     query: async (req,res,next) => {
         try {
             const reg=await models.data_esquema
-            .find({$and:[{"codigoUsuario":req.query.codigoUsuario},{"codigoDistribuidor":req.query.codigoDistribuidor}]})
-            .populate([ 
+            .find({$and:[
+              {"codigoUsuario":req.query.codigoUsuario},
+            {"codigoDistribuidor":req.query.codigoDistribuidor}
+          ]})
+            .populate([
                 {path:'codigoDistribuidor', model:'distribuidor'},
                 {path:'codigoUsuario', model:'usuario'},
                 ])
-                   
+
             if (!reg){
                 res.status(404).send({
                     message: 'El registro no existe.'
@@ -56,7 +59,7 @@ export default {
             } else{
                 for (let index = 0; index < reg.length; index++) {
                     const element = reg[index];
-                 
+
                     element.secuenciales.forEach(x => {
                         if (x.documento==req.query.documento) {
                             let secuencia = paddy(parseInt(x.secuencial),9)
@@ -71,8 +74,8 @@ export default {
                         }
                     });
                 }
-         
-            
+
+
             }
         } catch(e){
             res.status(500).send({
@@ -85,7 +88,7 @@ export default {
         try {
             let valor=req.query.valor;
             const reg=await models.data_esquema.find()
-            .populate([ 
+            .populate([
                 {path:'codigoDistribuidor', model:'distribuidor'},
                 {path:'codigoUsuario', model:'usuario'},
                 ])
@@ -98,7 +101,7 @@ export default {
         }
     },
     update: async (req,res,next) => {
-        try {         
+        try {
             const reg = await models.data_esquema.findByIdAndUpdate({_id:req.body._id},
             {
                 secuenciales:req.body.secuenciales,
@@ -106,7 +109,7 @@ export default {
                 codigoDistribuidor:req.body.codigoDistribuidor,
                 codigoUsuario:req.body.codigoUsuario
             });
-                    
+
             res.status(200).json("ok");
         } catch(e){
             res.status(500).send({
@@ -116,7 +119,7 @@ export default {
         }
     },
     updateSecuencial: async (req,res,next) => {
-        try {        
+        try {
             const data = await models.data_esquema.findOne({_id:req.body._id})
             let val=0
             data.secuenciales.forEach(element => {
@@ -131,13 +134,13 @@ export default {
                        if(dat){
                             res.status(200).json("ok");
                        }
-                   });   
+                   });
                 }
             });
-   
-    
-            
-           
+
+
+
+
         } catch(e){
             res.status(500).send({
                 message:'Ocurrió un error al actualizar el data_esquema.'+e
