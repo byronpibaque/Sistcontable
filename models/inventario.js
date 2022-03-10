@@ -4,6 +4,7 @@ const Esquema = new Schema({
     codigoBarra:{type:String,required:true},
     codigoLote:{type:String,required:true},
     nombreComercial:{type:String,required:true},
+    registroSanitario:{type:String,required:true},
     fraccionesTotales:{type:Number,required:true},
     fechaCaducidad:{type:String,required:true},
     fechaElaboracion:{type:String,required:true},

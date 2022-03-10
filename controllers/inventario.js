@@ -127,9 +127,11 @@ export default {
     update: async (req,res,next) => {
         try {         
             const reg = await models.inventario_esquema.findByIdAndUpdate({_id:req.body._id},
-                {codigoBarra:req.body.codigoBarra,
+                {
+                codigoBarra:req.body.codigoBarra,
                 codigoLote:req.body.codigoLote,
                 nombreComercial:req.body.nombreComercial,
+                registroSanitario:req.body.registroSanitario,
                 fraccionesTotales:req.body.fraccionesTotales,
                 fechaCaducidad:req.body.fechaCaducidad,
                 fechaElaboracion:req.body.fechaElaboracion,
@@ -143,7 +145,8 @@ export default {
                 codigoBodega :req.body.codigoBodega, 
                 codigoFabricante :req.body.codigoFabricante,
                 codigoProveedor :req.body.codigoProveedor,  
-                codigoProducto :req.body.codigoProducto });
+                codigoProducto :req.body.codigoProducto 
+            });
                     
             res.status(200).json(reg);
         } catch(e){

@@ -29,7 +29,11 @@ export default {
                                     message:'Ocurrió un error: '+err
                                  });
                    
-                     res.status(200).send(persona);    
+                                 if(!persona){
+                                    res.status(206).send({message:"No existe ningun registro para:"+req.query.data})
+                                }else{
+                                    res.status(200).send(persona); 
+                                } 
                   
                     
                 }) 

@@ -1,19 +1,19 @@
 import mongoose, { Schema } from "mongoose";
-const ingresoSchema = new Schema({
-  claveAcceso: { type: String, required: true },
+const egresoEsquema = new Schema({
   numComprobante: { type: String, required: true },
   fechaFactura: { type: Date, required: true },
   totalImpuesto: { type: Number, required: true },
-  totalRetenido:{ type: Number },
   totalDescuento: { type: Number, required: true },
   total: { type: Number, required: true },
   subTotal: { type: Number, required: true },
-  formaPago:[{
-    formaPago: {type:String},
-    total: {type:Number},
-    plazo: {type:Number},
-    unidadTiempo: {type:String}
-  }],
+  formaPago: [
+    {
+      formaPago: { type: String },
+      total: { type: Number },
+      plazo: { type: Number },
+      unidadTiempo: { type: String },
+    },
+  ],
   detalles: [
     {
       _id: {
@@ -40,19 +40,7 @@ const ingresoSchema = new Schema({
         type: Number,
         required: true,
       },
-      bonificacion: {
-        type: Number,
-        required: true,
-      },
-      costoNeto: {
-        type: Number,
-        required: true,
-      },
       pvp: {
-        type: Number,
-        required: true,
-      },
-      pvm: {
         type: Number,
         required: true,
       },
@@ -72,15 +60,15 @@ const ingresoSchema = new Schema({
   ],
   descripcion: { type: String },
   codigoUsuario: { type: Schema.ObjectId, ref: "usuarios", required: true },
-  codigoProveedor: { type: Schema.ObjectId, ref: "proveedors", required: true },
+  codigoCliente: { type: Schema.ObjectId, ref: "clientes", required: true },
   codigoDistribuidor: {
     type: Schema.ObjectId,
     ref: "distribuidors",
     required: true,
   },
-  codigoBodega :{type: Schema.ObjectId, ref:'bodegas'},
-  estado:{type:Number,default:1},
+  codigoBodega: { type: Schema.ObjectId, ref: "bodegas" },
+  estado: { type: Number, default: 1 },
   createdAt: { type: Date, default: Date.now },
 });
-const compras = mongoose.model("compras", ingresoSchema);
-export default compras;
+const egresos = mongoose.model("egresos", egresoEsquema);
+export default egresos;

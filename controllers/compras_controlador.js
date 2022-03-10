@@ -276,16 +276,21 @@ export default {
                                     codigoBodega:data.codigoBodega  
 
                                 }
-                                const verificacionCrear = crear(info)
-                                if (verificacionCrear) {
+                                if (e.unidadTiempo=="NINGUNO") {
                                     res.status(200).json("ok");
-                                } else {
-                                    res.status(500).send({
-                                        message:'Ocurrió un error al intentar crear el registro de la cuarentena.'
-                                    }); 
+                                }else{
+                                    const verificacionCrear = crear(info)
+                                    if (verificacionCrear) {
+                                        res.status(200).json("ok");
+                                    } else {
+                                        res.status(500).send({
+                                            message:'Ocurrió un error al intentar crear el registro de la cuarentena.'
+                                        }); 
+                                    }
                                 }
+                                
                            }).catch((err) => {
-                               
+                               return err
                            });
                         });
         
@@ -322,12 +327,9 @@ export default {
                        }).catch((err) => {
                               return err                
                        });
-                      });
-                    
+                      });      
                 }
             })
-           
-           
         } catch(e){
             res.status(500).send({
                 message:'Ocurrió un error al intentar desactivar el compras.'

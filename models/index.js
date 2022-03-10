@@ -24,8 +24,11 @@ import retenciones from './retenciones';
 import cuarentenas from './cuarentena';
 import perchas from './prechas';
 import asignacionPercha from './asignacion_percha';
-import cuentasporpagar from './cuentasporpagar';
+import cuentasporpagar from './cuentasporpagar'
+import cuentasporcobrar from './cuentasporcobrar'
+import egreso from './egreso';
 export default {
+    cuentasporcobrar,
     cuentasporpagar,
     asignacionPercha,
     perchas,
@@ -52,5 +55,6 @@ export default {
     presentacion_esquema,
     concentracion_esquema,
     producto_esquema,
-    inventario_esquema
+    inventario_esquema,
+    egreso
 } 
