@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
+
   "scripts": {
-    "start": "node index.js",
+    "start": "nodemon index.js --exec babel-node",
     "dev": "nodemon index.js --exec babel-node"
   },
   "keywords": [],
