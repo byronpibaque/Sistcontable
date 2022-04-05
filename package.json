@@ -1,9 +1,9 @@
 {
-  
   "name": "sistemacontable",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node -r esm index.js",
     "dev": "nodemon index.js --exec babel-node"
