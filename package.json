@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-     "prestart": "next build",
+  
     "start": "node -r esm index.js",
     "dev": "nodemon index.js --exec babel-node"
   },
