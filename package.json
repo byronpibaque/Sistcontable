@@ -1,4 +1,5 @@
 {
+  
   "name": "sistemacontable",
   "version": "1.0.0",
   "description": "",
@@ -40,6 +41,11 @@
     "xmldom": "^0.3.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.5",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "esm": "^3.2.25",
     "nodemo": "^1.0.0",
     "nodemon": "^2.0.7"

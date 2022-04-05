@@ -70,7 +70,7 @@ export default {
             {path:'codigoProveedor', model:'proveedor'},
             {path:'codigoUsuario', model:'usuario'},
             {path:'codigoProducto', model:'producto'},
-            ])
+            ]).sort({'nombreComercial':1});
           
             if (!reg || reg.length==0){
                 res.status(206).send({

@@ -187,6 +187,7 @@ export default {
     // },
     activate_Egreso: async (req,res,next) => {
         try {
+     
             const reg = await models.egreso.findByIdAndUpdate({_id:req.body._id},{estado:1}, async function (err,data) {
                 if(err) return err;
                 if(data){
@@ -212,7 +213,7 @@ export default {
                                 fechaFactura: data.fechaFactura,
                                 descripcion: data.descripcion,
                             }
-                            data.detalle.forEach(element => {
+                            data.detalles.forEach(element => {
                                 const disminuir = disminuirStock(element._id,element.fraccionesTotales);
                                 disminuir.then((result) => {
                                     res.status(200).json("ok");   
@@ -254,7 +255,7 @@ export default {
             const reg = await models.egreso.findByIdAndUpdate({_id:req.body._id},{estado:0},function (err,data) {      
                 if(err) return err
                 if(data){
-                    data.detalle.forEach(element => {
+                    data.detalles.forEach(element => {
                         const aumentar = aumentarStock(element._id,element.fraccionesTotales);
                         aumentar.then((result) => {
                             res.status(200).json("ok");   

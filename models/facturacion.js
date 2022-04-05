@@ -1,7 +1,8 @@
 import mongoose, { Schema } from "mongoose";
-const egresoEsquema = new Schema({
+const Esquema = new Schema({
   numComprobante: { type: String, required: true },
-  fechaFactura: { type: Date, required: true },
+  ptoEmision:{type:Number,required:true},
+  claveAcceso:{type:String},
   totalImpuesto: { type: Number, required: true },
   totalDescuento: { type: Number, required: true },
   total: { type: Number, required: true },
@@ -20,31 +21,19 @@ const egresoEsquema = new Schema({
         type: String,
         required: true,
       },
-      producto: {
+      descripcion: {
         type: String,
         required: true,
       },
-      fraccionesTotales: {
-        type: Number,
-        required: true,
-      },
-      fxcaja: {
-        type: Number,
-        required: true,
-      },
-      fracciones: {
-        type: Number,
+      nombreComercial: {
+        type: String,
         required: true,
       },
       cantidad: {
         type: Number,
         required: true,
       },
-      pvp: {
-        type: Number,
-        required: true,
-      },
-      punit: {
+      precioUni: {
         type: Number,
         required: true,
       },
@@ -56,7 +45,11 @@ const egresoEsquema = new Schema({
         type: Number,
         required: true,
       },
-      codigoLote: {
+      codigoAuxiliar: {
+        type: String,
+        required: true,
+      },
+      codigoBarra: {
         type: String,
         required: true,
       },
@@ -64,14 +57,14 @@ const egresoEsquema = new Schema({
         type: String,
         required: true,
       },
-      fechaCaducidad: {
+      fechas: {
         type: String,
         required: true,
       },
 
     },
   ],
-  descripcion: { type: String },
+ 
   codigoUsuario: { type: Schema.ObjectId, ref: "usuarios", required: true },
   codigoCliente: { type: Schema.ObjectId, ref: "clientes", required: true },
   codigoDistribuidor: {
@@ -83,5 +76,5 @@ const egresoEsquema = new Schema({
   estado: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
 });
-const egresos = mongoose.model("egresos", egresoEsquema);
-export default egresos;
+const facturas = mongoose.model("facturas", Esquema);
+export default facturas;

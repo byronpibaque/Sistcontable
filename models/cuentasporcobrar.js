@@ -6,7 +6,6 @@ const ctaporCobrar = new Schema({
     unidadTiempo: {type:String},
     totalFactura: {type:Number},
     totalPagado:{type:Number},
-   
     numComprobanteDocumento: {type:String},
     fechaFactura: {type:String},
     descripcion: {type:String},

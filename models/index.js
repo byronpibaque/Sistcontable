@@ -27,7 +27,9 @@ import asignacionPercha from './asignacion_percha';
 import cuentasporpagar from './cuentasporpagar'
 import cuentasporcobrar from './cuentasporcobrar'
 import egreso from './egreso';
+import facturacion from './facturacion';
 export default {
+    facturacion,
     cuentasporcobrar,
     cuentasporpagar,
     asignacionPercha,

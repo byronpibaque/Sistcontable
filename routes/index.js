@@ -28,6 +28,7 @@ import curentena from './cuarentena'
 import asignacionPercha from './asignacionPercha'
 import cuentasporpagar from './cuentasporpagar'
 import egresos from './egresos'
+import facturas from './facturacion';
 
 const router=routerx();
 router.use('/data',data)
@@ -65,4 +66,7 @@ router.use('/cuarentena',curentena)
 router.use('/asignacionpercha',asignacionPercha)
 //--------------Egresos-------------------//
  router.use('/egresos',egresos)
+
+ //-------------VENTA------------------------//
+ router.use('/factura',facturas)
 export default router;

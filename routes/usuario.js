@@ -16,5 +16,5 @@ router.put('/actualizar',Controlador.updateDatosPersonales);
 router.put('/activate',Controlador.activate);
 router.put('/deactivate',Controlador.deactivate);
 router.delete('/remove',Controlador.remove);
-
+router.delete('/removeEstablecimiento',Controlador.removeEstablecimiento);
 export default router;
