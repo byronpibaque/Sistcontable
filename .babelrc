@@ -1,5 +1,7 @@
 
 {
+    
+  
     "presets": [
     "@babel/preset-env",
     "@babel/preset-react"
@@ -8,4 +10,5 @@
     "transform-class-properties",
     "transform-object-rest-spread"
     ]
+
     }
