@@ -8,7 +8,7 @@
     "dev": "nodemon index.js --exec babel-node"
   },
   "keywords": [],
-  "author": "",
+  "author": "Byron Pibaque Vera",
   "license": "ISC",
   "dependencies": {
     "@peculiar/webcrypto": "^1.1.1",
