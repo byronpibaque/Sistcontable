@@ -186,13 +186,27 @@ export default {
                 );
                 res.status(200).json({ user, tokenReturn });
               } else {
-                res.status(203).send({
+                res.status(405).send({
                   message: "Clave incorrecta, Verifique.",
                 });
               }
           } else {
             codigoDistribuidor = undefined;
             match = x.clave;
+            if (match == req.query.clave) {
+              let tokenReturn = await token.encode(
+                user._id,
+                user.codigoRol,
+                codigoDistribuidor,
+                user.correo,
+                user.nombres
+              );
+              res.status(200).json({ user, tokenReturn });
+            } else {
+              res.status(405).send({
+                message: "Clave incorrecta, Verifique.",
+              });
+            }
           }
         });
 
