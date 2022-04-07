@@ -188,10 +188,11 @@ export default {
                 res.status(200).json({ user, tokenReturn });
 
               } else{
-               return next("Clave/Token incorrectos")
+                return res.status(400).send("Clave/Token incorrectos.")
+              
               }
              
-          }else if(req.query.codigoDistribuidor=="") {
+          } else if(req.query.codigoDistribuidor=="") {
             codigoDistribuidor = undefined;
             match = x.clave;
             if (match == req.query.clave) {
@@ -209,7 +210,7 @@ export default {
 
        
       } else {
-        return next("No existe el usuario, Debe ser registrado.")
+        return res.status(400).send("No existe usuario.")
       }
     } catch (e) {
       console.error(e)
