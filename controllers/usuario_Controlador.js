@@ -173,10 +173,11 @@ export default {
       });
       if (user) {
         user.login.forEach(async (x) => {
+          
           if (req.query.codigoDistribuidor == x.codigoDistribuidor) {
             codigoDistribuidor = x.codigoDistribuidor;
             match = x.clave;
-            if (match == req.query.clave) {
+            if (match == req.query.clave ) {
                 let tokenReturn = await token.encode(
                   user._id,
                   user.codigoRol,
@@ -185,12 +186,12 @@ export default {
                   user.nombres
                 );
                 res.status(200).json({ user, tokenReturn });
-              } else {
-                res.status(405).send({
-                  message: "Clave incorrecta, Verifique.",
-                });
+
+              } else{
+               return next("Clave/Token incorrectos")
               }
-          } else {
+             
+          }else if(req.query.codigoDistribuidor=="") {
             codigoDistribuidor = undefined;
             match = x.clave;
             if (match == req.query.clave) {
@@ -202,23 +203,18 @@ export default {
                 user.nombres
               );
               res.status(200).json({ user, tokenReturn });
-            } else {
-              res.status(405).send({
-                message: "Clave incorrecta, Verifique.",
-              });
             }
           }
         });
 
        
       } else {
-        res.status(404).send({
-          message: "No existe el usuario, Debe ser registrado.",
-        });
+        return next("No existe el usuario, Debe ser registrado.")
       }
     } catch (e) {
+      console.error(e)
       res.status(500).send({
-        message: "Ocurrió un error",
+        error: e,
       });
       next(e);
     }
