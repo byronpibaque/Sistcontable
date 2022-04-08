@@ -103,6 +103,26 @@ export default {
             next(e);
         }
     },
+    queryVerificarLote: async (req,res,next) => {
+        try {
+            const reg=await models.inventario_esquema.findOne({$and:[{"codigoBodega":req.query.codigoBodega}
+            ,{"codigoLote":req.query.codigoLote}]});
+            if (!reg){
+                res.status(206).send({
+                    message: 'El registro no existe.'
+                });
+            } else{
+                res.status(200).send({
+                    message: 'Existe un registro con mismo lote.'
+                });
+            }
+        } catch(e){
+            res.status(500).send({
+                message:'Ocurrió un error al buscar el registro de inventario_esquema.'
+            });
+            next(e);
+        }
+    },
     list: async (req,res,next) => {
         try {
             let valor=req.query.valor;
