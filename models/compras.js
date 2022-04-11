@@ -48,6 +48,10 @@ const ingresoSchema = new Schema({
         type: Number,
         required: true,
       },
+      pcompra:{
+        type: Number,
+        required: true,
+      },
       pvp: {
         type: Number,
         required: true,
