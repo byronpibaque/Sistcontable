@@ -152,7 +152,8 @@ export default {
         const reg = await models.facturacion.findByIdAndUpdate(
           { _id: req.body._id },
           {
-            claveAcceso:req.body.claveAcceso
+            claveAcceso:req.body.claveAcceso,
+            numComprobante:req.body.numero
           },
             );
 

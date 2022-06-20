@@ -10,6 +10,7 @@ const router=routerx();
 router.post('/add',Controlador.add);
 router.get('/queryId',Controlador.queryxid);
 router.get('/query',Controlador.query);
+router.get('/contar',Controlador.contarFacturas);
 router.get('/list',Controlador.list); 
 router.put('/actualizar',Controlador.update);
 router.put('/actualizarSecuencial',Controlador.updateSecuencial);
