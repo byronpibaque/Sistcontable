@@ -1,17 +1,17 @@
 import mongoose, { Schema } from "mongoose";
 const ingresoSchema = new Schema({
-  claveAcceso: { type: String, required: true },
+  claveAcceso:    { type: String, required: true },
   numComprobante: { type: String, required: true },
-  fechaFactura: { type: Date, required: true },
-  totalImpuesto: { type: Number, required: true },
-  totalRetenido:{ type: Number },
+  fechaFactura:   { type: Date, required: true },
+  totalImpuesto:  { type: Number, required: true },
+  totalRetenido:  { type: Number },
   totalDescuento: { type: Number, required: true },
-  total: { type: Number, required: true },
-  subTotal: { type: Number, required: true },
+  total:          { type: Number, required: true },
+  subTotal:       { type: Number, required: true },
   formaPago:[{
-    formaPago: {type:String},
-    total: {type:Number},
-    plazo: {type:Number},
+    formaPago: { type:String },
+    total: { type: Number },
+    plazo: { type: Number },
     unidadTiempo: {type:String}
   }],
   detalles: [
@@ -20,6 +20,8 @@ const ingresoSchema = new Schema({
         type: String,
         required: true,
       },
+      codigoBarra: { type: String },
+      codigoLote: { type: String },
       producto: {
         type: String,
         required: true,
@@ -82,8 +84,8 @@ const ingresoSchema = new Schema({
     ref: "distribuidors",
     required: true,
   },
-  codigoBodega :{type: Schema.ObjectId, ref:'bodegas'},
-  estado:{type:Number,default:1},
+  codigoBodega :{ type: Schema.ObjectId, ref: 'bodegas' },
+  estado:{ type: Number, default:1 },
   createdAt: { type: Date, default: Date.now },
 });
 const compras = mongoose.model("compras", ingresoSchema);

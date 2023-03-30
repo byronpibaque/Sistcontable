@@ -66,9 +66,17 @@ const cuarentenaSchema = new Schema({
     ref: "distribuidors",
     required: true,
   },
-  codigoBodega :{type: Schema.ObjectId, ref:'bodegas'},
-  estado:{type:Number,default:0},
-  createdAt: { type: Date, default: Date.now },
+  codigoBodega: { type: Schema.ObjectId, ref:'bodegas' },
+  codigoProveedor: { type: Schema.ObjectId, ref: "proveedors" },
+  estado: { type: Number, default: 0 },
+  createdAt: { type: Date, default: Date.now }
 });
+
 const cuarentenas = mongoose.model("cuarentenas", cuarentenaSchema);
 export default cuarentenas;
+
+
+
+
+
+

@@ -102,9 +102,20 @@ async function disminuirStock(codigoArticulo,costoNeto1,pvm1,pvp1,punit1,fTotale
 export default {
     add: async (req,res,next) =>{
         try {
+            //Guardar Compra
             const reg = await models.compras.create(req.body);
-            const agregarCuarentena = await models.cuarentenas.create({
-                
+
+            await models.cuarentenas.create({                
+              numComprobante:       req.body.numComprobante,
+              descripcion:          req.body.descripcion,
+              detalles:             req.body.detalles,
+              codigoUsuario:        req.body.codigoUsuario,
+              codigoDistribuidor:   req.body.codigoDistribuidor,
+              codigoBodega:         req.body.codigoBodega,  
+              codigoProveedor:      req.body.codigoProveedor  
+            });
+
+            await models.asignacionPercha.create({
               numComprobante:req.body.numComprobante,
               descripcion:req.body.descripcion,
               detalles:req.body.detalles,
@@ -112,15 +123,8 @@ export default {
               codigoDistribuidor:req.body.codigoDistribuidor,
               codigoBodega:req.body.codigoBodega  
             });
-            const asignacionPercha = await models.asignacionPercha.create({
-              numComprobante:req.body.numComprobante,
-              descripcion:req.body.descripcion,
-              detalles:req.body.detalles,
-              codigoUsuario:req.body.codigoUsuario,
-              codigoDistribuidor:req.body.codigoDistribuidor,
-              codigoBodega:req.body.codigoBodega  
-            });
-            res.status(200).json(reg);
+
+            res.status(200).json( reg );
         } catch (e){
             res.status(500).send({
                 message:'Ocurrió un error al intentar agregar compras.'+e
@@ -130,24 +134,20 @@ export default {
     },
     query: async (req,res,next) => {
         try {
-            const reg=await models.compras.findOne({_id:req.query._id})
-            .populate([
+            const reg = await models.compras.findOne({_id:req.query._id}).populate([
                 {path:'codigoBodega', model:'bodega'},
                 {path:'codigoUsuario', model:'usuario'},
                 {path:'codigoProveedor', model:'proveedor'},
                 {path:'codigoDistribuidor', model:'distribuidor'},
-                ])
-            if (!reg){
-                res.status(404).send({
-                    message: 'El registro no existe.'
-                });
-            } else{
+            ])
+
+            if (!reg)
+                res.status(404).send({ message: 'El registro no existe.' });
+            else
                 res.status(200).json(reg);
-            }
+            
         } catch(e){
-            res.status(500).send({
-                message:'Ocurrió un error al buscar el registro de compras.'
-            });
+            res.status(500).send({ message:'Ocurrió un error al buscar el registro de compras.' });
             next(e);
         }
     },
@@ -182,16 +182,16 @@ export default {
     },
     list: async (req,res,next) => {
         try {
-            let valor=req.query.valor;
+            let valor = req.query.valor;
             const reg=await models.compras.find({$and:[{codigoDistribuidor:req.query.codigoDistribuidor}]}).populate([
                 {path:'codigoBodega', model:'bodega'},
                 {path:'codigoUsuario', model:'usuario'},
                 {path:'codigoProveedor', model:'proveedor'},
                 {path:'codigoDistribuidor', model:'distribuidor'},
-                ])
-            // .sort({'descripcion':1});
+            ])
+            .sort({$natural:-1});
             res.status(200).json(reg);
-        } catch(e){
+        }catch(e){
             res.status(500).send({
                 message:'Ocurrió un error al intentar listar.'+e
             });

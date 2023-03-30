@@ -9,6 +9,6 @@ const Esquema = new Schema({
     createdAt:{type:Date,default:Date.now},
 });
 
-const bodega_esquema = mongoose.model('bodega',Esquema);
+const bodega_esquema = mongoose.model('bodega', Esquema);
 
 export default bodega_esquema;

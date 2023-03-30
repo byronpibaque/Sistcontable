@@ -2,14 +2,11 @@ import routerx from 'express-promise-router';
 
 import Controlador from '../controllers/proveedor_controlador';
 
-
 const router=routerx();
-
-
  
 router.post('/add',Controlador.add);
 router.post('/addEstablecimientos',Controlador.addEstablecimientos);
-router.get('/consulta',Controlador.buscarProveedor);
+router.get('/consulta', Controlador.buscarProveedor);
 router.get('/query',Controlador.query);
 router.get('/list',Controlador.list); 
 router.put('/actualizar',Controlador.updatedatos);

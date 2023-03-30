@@ -135,9 +135,9 @@ export default {
                 {path:'codigoBodega', model:'bodega'},
                 {path:'codigoUsuario', model:'usuario'},
                 {path:'codigoCliente', model:'cliente'},
-                {path:'codigoDistribuidor', model:'distribuidor'},
+                {path:'codigoDistribuidor', model:'distribuidor'}
                 ])
-            // .sort({'descripcion':1});
+                .sort({$natural:-1});
             res.status(200).json(reg);
         } catch(e){
             res.status(500).send({

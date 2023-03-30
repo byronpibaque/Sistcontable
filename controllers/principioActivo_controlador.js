@@ -32,7 +32,7 @@ export default {
         try {
             let valor=req.query.valor;
             const reg=await models.principioActivo_esquema.find({$or:[{'descripcion':new RegExp(valor,'i')}]},{createdAt:0})
-            .sort({'descripcion':1});
+            .sort({ $natural: -1 });
             res.status(200).json(reg);
         } catch(e){
             res.status(500).send({
