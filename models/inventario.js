@@ -1,9 +1,9 @@
 import mongoose,{Schema} from 'mongoose';
 
 const Esquema = new Schema({ 
-    codigoBarra:{type:String,required:true},
-    codigoLote:{type:String,required:true},
-    nombreComercial:{type:String,required:true},
+    codigoBarra:{ type:String,required:true },
+    codigoLote:{ type: String, required: true },
+    nombreComercial:{ type: String, required: true},
     registroSanitario:{type:String,required:true},
     fraccionesTotales:{type:Number,required:true},
     fechaCaducidad:{type:String,required:true},
@@ -21,7 +21,13 @@ const Esquema = new Schema({
     codigoFabricante :{type: Schema.ObjectId, ref:'fabricantes'},
     codigoProveedor :{type: Schema.ObjectId, ref:'proveedors'},  
     codigoProducto :{type: Schema.ObjectId, ref:'productos'}, 
-    estado: {type:Number,default:1},
+    estado: { type:Number, default:1 },
+    detalle: [{
+        numComprobante: { type: String },
+        percha:         { type: String },
+        cantidad:       { type: Number },
+        createdAt:      { type: Date, default: Date.now }
+    }],
     createdAt:{type:Date,default:Date.now},
 });
 

@@ -1,8 +1,9 @@
 import models from "../models";
 
 async function aumentarStock(
-  codigoArticulo,costoNeto1,pvm1,pvp1,punit1,fTotales,percha1,numComprobante1) {
-    //Obetener cuanto de total lleva
+  codigoArticulo,costoNeto1,pvm1,pvp1,punit1,fTotales,percha1,numComprobante1
+  ) {
+    //Obtener cuanto de total lleva
     let { fraccionesTotales } = await models.inventario_esquema.findOne({_id:codigoArticulo})
 
     let nfraccionesTotales = parseInt(fraccionesTotales) + parseInt(fTotales)
@@ -14,7 +15,14 @@ async function aumentarStock(
         pvp:                pvp1,
         punit:              punit1,
         percha:             percha1,
-        numComprobante:     numComprobante1
+        numComprobante:     numComprobante1,
+        $addToSet : {
+          detalle : {
+            numComprobante: numComprobante1,
+            percha:         percha1,
+            cantidad:       fTotales
+          }
+        }
     }).then(async (result) => {
         return result
     }).catch((err) => {
@@ -106,7 +114,7 @@ export default {
               const aumentar = aumentarStock(l._id,l.costoNeto,l.pvm,l.pvp,l.punit,l.fraccionesTotales,l.percha,req.body.numComprobante)
 
               aumentar.then((result) => {
-              res.status(200).json("ok");
+                res.status(200).json("ok");
               }).catch((err) => {
                     return err                
               });

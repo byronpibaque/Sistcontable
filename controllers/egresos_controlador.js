@@ -19,42 +19,30 @@ async function crearCPC(data){
     }
 }
 async function disminuirStock(codigoArticulo,fTotales) {
-    let {fraccionesTotales} = await models.inventario_esquema.findOne({_id:codigoArticulo})
-    let nfraccionesTotales = parseInt(fraccionesTotales)-parseInt(fTotales)
-  if(parseInt(nfraccionesTotales)>=0){
-    const reg = await models.inventario_esquema.findByIdAndUpdate(
-        {_id:codigoArticulo},{
-            fraccionesTotales:nfraccionesTotales,
-            percha:"",
-            numComprobante:""
-        }).then(async (result) => {
-            return result
-        }).catch((err) => {
-            return err
-        });
-  }else {
-    const reg = await models.inventario_esquema.findByIdAndUpdate(
-        {_id:codigoArticulo},{
-            fraccionesTotales:0,
-            percha:"",
-            numComprobante:""
-        }).then(async (result) => {
-            return result
-        }).catch((err) => {
-            return err
-        });
-  }
+    let { fraccionesTotales } = await models.inventario_esquema.findOne( { _id: codigoArticulo });
+
+    let nfraccionesTotales = parseInt(fraccionesTotales) - parseInt(fTotales)
+
+    if(parseInt(nfraccionesTotales) >= 0 ){
+        await models.inventario_esquema.findByIdAndUpdate(
+            { _id: codigoArticulo }, { fraccionesTotales: nfraccionesTotales }
+            ).then(async (result) => { return result })
+            .catch((err) => { return err });
+    }else {
+        await models.inventario_esquema.findByIdAndUpdate(
+            {_id:codigoArticulo},{ fraccionesTotales: 0, percha: "", numComprobante:""})
+            .then(async (result) => { return result })
+            .catch((err) => { return err });
+    }
      
   }
-  async function aumentarStock(codigoArticulo,fTotales) {
+async function aumentarStock(codigoArticulo,fTotales) {
     let {fraccionesTotales} = await models.inventario_esquema.findOne({_id:codigoArticulo})
     let nfraccionesTotales = parseInt(fraccionesTotales)+parseInt(fTotales)
  
     const reg = await models.inventario_esquema.findByIdAndUpdate(
         {_id:codigoArticulo},{
-            fraccionesTotales:nfraccionesTotales,
-            percha:"",
-            numComprobante:""
+            fraccionesTotales:nfraccionesTotales
         }).then(async (result) => {
             return result
         }).catch((err) => {
@@ -62,7 +50,7 @@ async function disminuirStock(codigoArticulo,fTotales) {
         });
  
      
-  }
+}
 export default {
     add: async (req,res,next) =>{
         try {
@@ -186,20 +174,19 @@ export default {
     //     }
     // },
     activate_Egreso: async (req,res,next) => {
-        try {
-     
-            const reg = await models.egreso.findByIdAndUpdate({_id:req.body._id},{estado:1}, async function (err,data) {
+        try {     
+                await models.egreso.findByIdAndUpdate({_id:req.body._id}, { estado: 1 }, async function (err, data) {
                 if(err) return err;
                 if(data){
-                    const reg = await models.cuentasporcobrar.estimatedDocumentCount( async function (err, count) {
+                    await models.cuentasporcobrar.estimatedDocumentCount( async function (err, count) {
                         if (err) return handleError(err);
-        
-        
+                        // console.log( data );
                         let contadorEntero = parseInt(count) + 1
-                        let vall=paddy(parseInt(contadorEntero), 9)
+
+                        let vall = paddy(parseInt(contadorEntero), 9)
+
                         data.formaPago.forEach(e => {
-                            let datosCPC={
-                              
+                            let datosCPC = {                              
                                 numComprobante: vall,
                                 totalFormaPago: e.total,
                                 plazo:e.plazo,
@@ -215,15 +202,14 @@ export default {
                             }
                             data.detalles.forEach(element => {
                                 const disminuir = disminuirStock(element._id,element.fraccionesTotales);
-                                disminuir.then((result) => {
-                                    res.status(200).json("ok");   
-                                }).catch((err) => {
+                                disminuir.then((result) => { res.status(200).json("ok"); }).catch((err) => {
                                  return err   
                                 });
                             });
                             if (e.unidadTiempo=="NINGUNO") {
                                 res.status(200).json("ok");
                             }else{
+                                //Crear cuenta por cobrar
                                 const fx = crearCPC(datosCPC)
                                 fx.then((result) => {
                                     res.status(200).json("ok");
@@ -233,15 +219,10 @@ export default {
                                  }); 
                                 });
                             }
-                          
                         });
-        
                     });
-                 
-                
                 }
             });
-           
         } catch(e){
             res.status(500).send({
                 message:'Ocurrió un error al intentar activar el egreso.'
@@ -251,8 +232,7 @@ export default {
     },
     deactivate_Egreso:async (req,res,next) => {
         try {
-            
-            const reg = await models.egreso.findByIdAndUpdate({_id:req.body._id},{estado:0},function (err,data) {      
+            await models.egreso.findByIdAndUpdate({_id:req.body._id},{ estado: 0 },function (err, data) {      
                 if(err) return err
                 if(data){
                     data.detalles.forEach(element => {
@@ -263,11 +243,8 @@ export default {
                          return err   
                         });
                     });
-                                           
                 }
             })
-           
-           
         } catch(e){
             res.status(500).send({
                 message:'Ocurrió un error al intentar desactivar el egreso.'
@@ -291,6 +268,15 @@ export default {
             res.status(500).send({
                 message: 'Ocurrió un error'
             });
+            next(e);
+        }
+    },
+    eliminarEgreso: async (req,res,next) => {
+        try {
+            const egreso = await models.egreso.deleteOne({_id: req.params.egreso_id})
+            res.json({ egreso, msg: 'ok' });
+        } catch(e){
+            res.status(500).send({ message:'Ocurrió un error al intentar desactivar el egreso.' });
             next(e);
         }
     },

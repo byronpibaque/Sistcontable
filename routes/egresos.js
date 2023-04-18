@@ -19,6 +19,7 @@ router.get('/obtenerconteo',Controlador.AumentarNumComp);
 
 router.put('/activate',Controlador.activate_Egreso);
 router.put('/deactivate',Controlador.deactivate_Egreso);
+router.delete('/eliminarEgreso/:egreso_id',Controlador.eliminarEgreso);
 //router.delete('/remove',Controlador.remove);
 
 
