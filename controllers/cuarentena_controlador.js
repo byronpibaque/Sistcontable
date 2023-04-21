@@ -101,7 +101,8 @@ export default {
           if (err) return err;
           if (data) {
             await models.asignacionPercha.update(
-            { "detalles._id": req.body._id, "numComprobante": req.body.numComprobante },{
+            { "detalles._id": req.body._id, "numComprobante": req.body.numComprobante },
+            {
               $set: {
                 "detalles.$.estado": 1,
                 "detalles.$.descripcion": ""

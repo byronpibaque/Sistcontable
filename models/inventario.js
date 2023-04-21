@@ -6,8 +6,8 @@ const Esquema = new Schema({
     nombreComercial:{ type: String, required: true},
     registroSanitario:{type:String,required:true},
     fraccionesTotales:{type:Number,required:true},
-    fechaCaducidad:{type:String,required:true},
-    fechaElaboracion:{type:String,required:true},
+    fechaCaducidad:{type:Date,required:true},
+    fechaElaboracion:{type:Date,required:true},
     iva:{type:Number,required:true},
     descuento:{type:Number,required:true},
     pvp:{type:Number,required:true},
@@ -26,6 +26,7 @@ const Esquema = new Schema({
         numComprobante: { type: String },
         percha:         { type: String },
         cantidad:       { type: Number },
+        temperatura:    { type: Number, default: null },
         createdAt:      { type: Date, default: Date.now }
     }],
     createdAt:{type:Date,default:Date.now},

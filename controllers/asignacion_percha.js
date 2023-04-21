@@ -1,8 +1,8 @@
 import models from "../models";
 
 async function aumentarStock(
-  codigoArticulo,costoNeto1,pvm1,pvp1,punit1,fTotales,percha1,numComprobante1
-  ) {
+    codigoArticulo,costoNeto1,pvm1,pvp1,punit1,fTotales,percha1,numComprobante1, temperatura
+    ) {
     //Obtener cuanto de total lleva
     let { fraccionesTotales } = await models.inventario_esquema.findOne({_id:codigoArticulo})
 
@@ -20,7 +20,8 @@ async function aumentarStock(
           detalle : {
             numComprobante: numComprobante1,
             percha:         percha1,
-            cantidad:       fTotales
+            cantidad:       fTotales,
+            temperatura:    temperatura
           }
         }
     }).then(async (result) => {
@@ -98,7 +99,8 @@ export default {
   },
   update: async (req, res, next) => {
     try {
-      const reg = await models.asignacionPercha.findByIdAndUpdate(
+      console.log( req.body );
+      await models.asignacionPercha.findByIdAndUpdate(
         { _id: req.body._id }, {
           numComprobante:req.body.numComprobante,
           descripcion:req.body.descripcion,
@@ -111,14 +113,13 @@ export default {
           if(err) return err
           if(data){
             req.body.detalles.forEach(l => {
-              const aumentar = aumentarStock(l._id,l.costoNeto,l.pvm,l.pvp,l.punit,l.fraccionesTotales,l.percha,req.body.numComprobante)
+              const aumentar = aumentarStock(l._id,l.costoNeto,l.pvm,l.pvp,l.punit,l.fraccionesTotales,l.percha,req.body.numComprobante, l.temperatura)
 
               aumentar.then((result) => {
                 res.status(200).json("ok");
               }).catch((err) => {
                     return err                
               });
-
             });
           }
         }

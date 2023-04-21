@@ -9,6 +9,7 @@ const router=routerx();
 
 router.post('/add',Controlador.add);
 router.post('/addAccesos',Controlador.addAccesos);
+router.put('/setCredenciales',Controlador.setCredenciales);
 router.get('/query',Controlador.query);
 router.get('/list',Controlador.list); 
 router.post('/login',Controlador.login);

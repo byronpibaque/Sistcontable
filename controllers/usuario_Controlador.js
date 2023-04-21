@@ -82,7 +82,6 @@ export default {
       next(e);
     }
   },
-
   updateDatosPersonales: async (req, res, next) => {
     try {
       const reg = await models.Usuario_esquema.findByIdAndUpdate(
@@ -99,6 +98,28 @@ export default {
         }
       );
       res.status(200).json(reg);
+    } catch (e) {
+      res.status(500).send({
+        message: "Ocurrió un error",
+      });
+      next(e);
+    }
+  },
+  setCredenciales: async (req, res, next) => {
+    try {
+      const { usuario_id, distribuidor_id, campo1, tipo } = req.body;
+      let options = {};
+
+      if (tipo == 'password') 
+        options = { $set: { "login.$.clave": campo1 } };       
+      if (tipo == 'usuario') 
+        options = { $set: { "login.$.usuario": campo1 } };      
+
+      const reg = await models.Usuario_esquema.update(
+        { _id: usuario_id, "login.codigoDistribuidor": distribuidor_id },
+        options
+      );
+      res.status(200).json({msg: reg });
     } catch (e) {
       res.status(500).send({
         message: "Ocurrió un error",
