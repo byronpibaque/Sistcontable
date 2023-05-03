@@ -3,6 +3,7 @@ const ingresoSchema = new Schema({
   claveAcceso:    { type: String, required: true },
   numComprobante: { type: String, required: true },
   fechaFactura:   { type: Date, required: true },
+  fechaIngresoBodega:  { type: Date, required: false },
   totalImpuesto:  { type: Number, required: true },
   totalRetenido:  { type: Number },
   totalDescuento: { type: Number, required: true },

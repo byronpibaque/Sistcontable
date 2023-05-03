@@ -99,7 +99,6 @@ export default {
   },
   update: async (req, res, next) => {
     try {
-      console.log( req.body );
       await models.asignacionPercha.findByIdAndUpdate(
         { _id: req.body._id }, {
           numComprobante:req.body.numComprobante,

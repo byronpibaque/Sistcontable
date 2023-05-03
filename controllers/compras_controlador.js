@@ -102,6 +102,7 @@ async function disminuirStock(codigoArticulo,costoNeto1,pvm1,pvp1,punit1,fTotale
 export default {
     add: async (req,res,next) =>{
         try {
+            // console.log( req.body );
             //Guardar Compra
             const reg = await models.compras.create(req.body);
 
