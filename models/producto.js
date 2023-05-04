@@ -4,8 +4,8 @@ const Esquema = new Schema({
 
     descripcion:{type:String,required:true},
     fraccionCaja:{type:Number,required:true},
-    contenidoNeto:{type:String,required:true},
-    detalleConcentracion:{type:String,required:true},
+    contenidoNeto:{type:String,required:false},
+    detalleConcentracion:{type:String,required:false},
     codigoUsuario:{type: Schema.ObjectId, ref:'usuarios', required: false},
     codigoTipoproducto:{type: Schema.ObjectId, ref:'tipoProductos', required: false},
     codigoPrincipioactivo:{type: Schema.ObjectId, ref:'principioActivos', required: false},
