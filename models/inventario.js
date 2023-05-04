@@ -13,6 +13,7 @@ const Esquema = new Schema({
     pvp:{type:Number,required:false},
     punit:{type:Number,required:false},
     pvm:{type:Number,required:false},
+    costoNetoDescuento:{ type:Number, required:false },
     costoNeto:{type:Number,required:false},
     percha:{type:String},
     numComprobante:{type:String},

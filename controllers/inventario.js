@@ -159,6 +159,7 @@ export default {
                 pvm:req.body.pvm,
                 punit:req.body.punit,
                 costoNeto:req.body.costoNeto,
+                costoNetoDescuento:req.body.costoNetoDescuento,
                 codigoUsuario:req.body.codigoUsuario,
                 codigoBodega :req.body.codigoBodega, 
                 codigoFabricante :req.body.codigoFabricante,

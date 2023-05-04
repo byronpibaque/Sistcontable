@@ -123,11 +123,12 @@ export default {
             const data = await models.data_esquema.findOne({_id:req.body._id})
             let val=0
             data.secuenciales.forEach(element => {
-                if (element.documento==req.body.documento) {
+                if (element.documento == req.body.documento) {
                   
-                    models.data_esquema
-                   .update({"secuenciales._id":element._id},{$set:{"secuenciales.$.secuencial":parseInt(req.body.numero)}},
-                   function (err,dat) {
+                    models.data_esquema.update(
+                        {"secuenciales._id":element._id},
+                        {$set:{"secuenciales.$.secuencial":parseInt(req.body.numero)}
+                    }, function (err,dat) {
                        if(err) return res.status(500).send({
                         message:'Ocurrió un error al actualizar el data_esquema.'+err
                     });
@@ -149,7 +150,7 @@ export default {
         }
     },
     contarFacturas: async (req,res,next) => {
-        try {
+        try{
             const fact = await models.facturacion.find({$and:[
                 {"codigoUsuario":req.query.codigoUsuario},
                 {"codigoDistribuidor":req.query.codigoDistribuidor},
