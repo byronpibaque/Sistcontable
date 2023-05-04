@@ -152,19 +152,14 @@ export default {
         try {
             const fact = await models.facturacion.find({$and:[
                 {"codigoUsuario":req.query.codigoUsuario},
-              {"codigoDistribuidor":req.query.codigoDistribuidor},
-              {"estado":1}
-            ]}).count()
+                {"codigoDistribuidor":req.query.codigoDistribuidor},
+                {"estado":1}
+            ]}).count();
+            // return console.log( fact );
             let secuencia = paddy(parseInt(fact+100),9)
             res.status(200).json(secuencia);
-          
-
-
-
         } catch(e){
-            res.status(500).send({
-                message:'Ocurrió un error al actualizar el data_esquema.'+e
-            });
+            res.status(500).send({ message:'Ocurrió un error al actualizar el data_esquema.' + e });
             next(e);
         }
     },
