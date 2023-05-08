@@ -130,7 +130,7 @@ export default {
           { path: "codigoUsuario", model: "usuario" },
           { path: "codigoCliente", model: "cliente" },
           { path: "codigoDistribuidor", model: "distribuidor" },
-        ]);
+        ]).sort({ $natural: -1 });
       // .sort({'descripcion':1});
       //console.log(reg);
       if (!reg){

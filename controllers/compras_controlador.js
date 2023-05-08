@@ -102,7 +102,11 @@ async function disminuirStock(codigoArticulo,costoNeto1,pvm1,pvp1,punit1,fTotale
 export default {
     add: async (req,res,next) =>{
         try {
-            // console.log( req.body );
+            req.body.detalles.forEach( async (detalle) => {
+                await models.inventario_esquema.findByIdAndUpdate( detalle._id, 
+                    { $set:{ fechaIngresoBodega: req.body.fechaIngresoBodega }
+                });
+            });
             //Guardar Compra
             const reg = await models.compras.create(req.body);
 

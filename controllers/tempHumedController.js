@@ -129,7 +129,6 @@ export default {
     edit: async (req,res,next) =>{
         try {
             const { _id } = req.body;
-            // const response = await models.Temp_Humedad.create( req.body )
             const response = await models.Temp_Humedad.findByIdAndUpdate( _id, req.body, { new: true });
 
             res.json({ response })

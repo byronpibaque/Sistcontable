@@ -151,14 +151,24 @@ export default {
     },
     contarFacturas: async (req,res,next) => {
         try{
-            const fact = await models.facturacion.find({$and:[
-                {"codigoUsuario":req.query.codigoUsuario},
-                {"codigoDistribuidor":req.query.codigoDistribuidor},
-                {"estado":1}
-            ]}).count();
-            // return console.log( fact );
-            let secuencia = paddy(parseInt(fact+100),9)
-            res.status(200).json(secuencia);
+            const secuenciales = await models.data_esquema.find({$and:[
+                {"codigoUsuario": req.query.codigoUsuario},
+                {"codigoDistribuidor": req.query.codigoDistribuidor}
+            ]});
+
+            let secuencial = secuenciales[0].secuenciales.find( s => 
+                    s.documento == 'FACTURA' )
+
+            secuencial = paddy(parseInt( secuencial.secuencial ),9)
+
+            // const fact = await models.facturacion.find({$and:[
+            //     {"codigoUsuario":req.query.codigoUsuario},
+            //     {"codigoDistribuidor":req.query.codigoDistribuidor},
+            //     {"estado":1}
+            // ]}).count();
+            // let secuencia = paddy(parseInt(fact+100),9)
+            // console.log( secuencia );
+            res.status(200).json( secuencial );
         } catch(e){
             res.status(500).send({ message:'Ocurrió un error al actualizar el data_esquema.' + e });
             next(e);

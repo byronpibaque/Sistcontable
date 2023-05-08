@@ -8,6 +8,7 @@ const Esquema = new Schema({
     fraccionesTotales:{type:Number,required:false},
     fechaCaducidad:{type:Date,required:false},
     fechaElaboracion:{type:Date,required:false},
+    fechaIngresoBodega: { type: Date, required: false },
     iva:{type:Number,required:false},
     descuento:{type:Number,required:false},
     pvp:{type:Number,required:false},
