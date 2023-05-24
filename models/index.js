@@ -29,6 +29,7 @@ import cuentasporcobrar from './cuentasporcobrar'
 import egreso from './egreso';
 import facturacion from './facturacion';
 import Temp_Humedad from './tem_humed';
+import Acta_Entrega from './acta_entrega';
 export default {
     facturacion,
     cuentasporcobrar,
@@ -60,5 +61,6 @@ export default {
     producto_esquema,
     inventario_esquema,
     egreso,
-    Temp_Humedad
+    Temp_Humedad,
+    Acta_Entrega
 } 
