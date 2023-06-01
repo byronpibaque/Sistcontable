@@ -29,6 +29,8 @@ import asignacionPercha from './asignacionPercha'
 import cuentasporpagar from './cuentasporpagar'
 import egresos from './egresos'
 import facturas from './facturacion';
+import temp_humedad from './temp_humedad';
+import acta_entrega from './acta_entrega';
 
 const router=routerx();
 router.use('/data',data)
@@ -36,6 +38,12 @@ router.use('/usuario',Usuario_router)
 router.use('/rol',Rol_router)
 router.use('/genero',Genero_router)
 router.use('/distribuidor',Distribuidor_router)
+//------------TEMPERATURAS Y HUMEDAD-------------//
+router.use('/temp_humedad', temp_humedad)
+
+//------------ACTA DE ENTREGA-------------//
+router.use('/acta_entrega', acta_entrega)
+
 //------------CATALGO DE CUENTAS-------------//
 router.use('/nivel1',Nivel1_router)
 router.use('/nivel2',Nivel2_router)

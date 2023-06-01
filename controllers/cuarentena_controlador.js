@@ -37,16 +37,16 @@ export default {
     try {
       let valor = req.query.valor;
       const reg = await models.cuarentenas
-        .find(
-          {$and:[{codigoDistribuidor:req.query.codigoDistribuidor}]}
-        )
+        .find({
+          $and:[{ codigoDistribuidor: req.query.codigoDistribuidor }]
+        })
         .populate([
           {path:'codigoBodega', model:'bodega'},
           {path:'codigoUsuario', model:'usuario'},
-          // {path:'codigoProveedor', model:'proveedor'},
+          {path:'codigoProveedor', model:'proveedor'},
           {path:'codigoDistribuidor', model:'distribuidor'},
         ])
-        .sort({ descripcion: 1 });
+        .sort({$natural:-1});
       res.status(200).json(reg);
     } catch (e) {
       res.status(500).send({
@@ -91,38 +91,28 @@ export default {
   activar_detalle: async (req, res, next) => {
     try {
       const reg = await models.cuarentenas.update(
-        {
-          "detalles._id": req.body._id,
-        },
+        { "detalles._id": req.body._id, "_id": req.body.cuarentena_id }, 
         {
           $set: {
             "detalles.$.estado": 1,
-            "detalles.$.descripcion": "",
-          },
-        },
-       async function (err, data) {
+            "detalles.$.descripcion": ""
+          }        
+        }, async function (err, data) {
           if (err) return err;
           if (data) {
-            const reg2 = await models.asignacionPercha.update(
-              {
-                "detalles._id": req.body._id,
+            await models.asignacionPercha.update(
+            { "detalles._id": req.body._id, "numComprobante": req.body.numComprobante },
+            {
+              $set: {
+                "detalles.$.estado": 1,
+                "detalles.$.descripcion": ""
               },
-              {
-                $set: {
-                  "detalles.$.estado": 1,
-                  "detalles.$.descripcion": "",
-                },
-              },
-             async function (err, data) {
-                if (err) return err;
-                if (data) {
-                  res.status(200).json(reg);
-                }
-              }
-            );
+            }, async function (err, data) {
+              if (err) return err;
+              if (data) res.status(200).json(reg);                
+            });
           }
-        }
-      );
+        });
     } catch (e) {
       res.status(500).send({
         message: "Ocurrió un error al actualizar el detalle de cuarentena." + e,
@@ -132,41 +122,30 @@ export default {
   },
   desactivar_detalle: async (req, res, next) => {
     try {
-      const reg = await models.cuarentenas.update(
-        {
-          "detalles._id": req.body._id,
-        },
-        {
-          $set: {
+      const reg = await models.cuarentenas.update({ 
+        "detalles._id": req.body._id, 
+        "_id": req.body.cuarentena_id 
+      },{ $set: {
             "detalles.$.estado": 0,
-            "detalles.$.descripcion": req.body.descripcion,
-          },
-        },
-        async function (err,data) {
+            "detalles.$.descripcion": req.body.descripcion
+        }}, async function (err,data) {
             if(err) return err;
             if(data){
-                const reg2 = await models.asignacionPercha.update(
-                    {
-                        "detalles._id": req.body._id,
-                      },
-                      {
-                        $set: {
-                          "detalles.$.estado": 0,
-                          "detalles.$.descripcion": req.body.descripcion,
-                        },
-                      },async function (err,data) {
-                          if(err) return err;
-                          if(data){
-                            res.status(200).json(reg); 
-                          }
-                      })
+              await models.asignacionPercha.update({
+                "detalles._id": req.body._id,
+                "numComprobante": req.body.numComprobante
+              },{ $set: {
+                  "detalles.$.estado": 0,
+                  "detalles.$.descripcion": req.body.descripcion,
+                } 
+              }, async function (err,data) {
+                  if(err) return err;
+                  if(data) res.status(200).json(reg); 
+              })
             }
         })
-  
     } catch (e) {
-      res.status(500).send({
-        message: "Ocurrió un error al actualizar el detalle de cuarentena." + e,
-      });
+      res.status(500).send({ message: "Ocurrió un error al actualizar el detalle de cuarentena." + e });
       next(e);
     }
   },

@@ -34,7 +34,7 @@ export default {
     buscarProveedor: async (req,res,next) => {
         try {
             models.proveedor_esquema
-            .findOne({$or:[{"ruc":req.query.data},
+            .findOne({$or:[{"ruc": req.query.data},
             // {"nombres":req.query.data},
             {'razonsocial': new RegExp('^'+req.query.data,'i')},
             {'razonsocial':  new RegExp(req.query.data+'$','i')},
@@ -42,7 +42,7 @@ export default {
             {'razonsocial':  new RegExp(req.query.data+'$','i')},
         ]})
             .exec(function (err,persona) {
-                    if(err)  
+                if(err)  
                     return res.status(500).send({
                                     message:'Ocurrió un error: '+err
                                  });
@@ -52,11 +52,9 @@ export default {
                     }else{
                         res.status(200).send(persona); 
                     }
-                     
-                  
-                    
-                }) 
+            }) 
         } catch(e){
+            console.log(e);
             res.status(500).send({
                 message:'Ocurrió un error'
             });

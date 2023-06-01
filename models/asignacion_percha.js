@@ -57,7 +57,8 @@ const esquema = new Schema({
         required: true,
       },
       estado:{type:Number,default:0},
-      percha:{type:String,default:""}
+      percha:{ type:String, default:"" },
+      temperatura:{ type: Number, default: null }
     },
   ],
   codigoUsuario: { type: Schema.ObjectId, ref: "usuarios", required: true },

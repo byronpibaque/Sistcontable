@@ -31,8 +31,11 @@ export default {
     list: async (req,res,next) => {
         try {
             let valor=req.query.valor;
-            const reg=await models.concentracion_esquema.find({$or:[{'descripcion':new RegExp(valor,'i')}]},{createdAt:0})
-            .sort({'descripcion':1});
+            const reg=await models.concentracion_esquema.find(
+                { $or:[ {'descripcion': new RegExp(valor,'i')} ] },
+                { createdAt: 0 }
+            ).sort({$natural: -1});
+
             res.status(200).json(reg);
         } catch(e){
             res.status(500).send({

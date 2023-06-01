@@ -125,17 +125,15 @@ export default {
     },
     list: async (req,res,next) => {
         try {
-            let valor=req.query.valor;
             const reg=await models.inventario_esquema.find({codigoBodega:req.query.codigoBodega})  
             .populate([
-                {path:'codigoBodega', model:'bodega'},
-                {path:'codigoFabricante', model:'fabricante'},
-                {path:'codigoProveedor', model:'proveedor'},
-                {path:'codigoUsuario', model:'usuario'},
-                {path:'codigoProducto', model:'producto'},
-                ])
-            .sort({'descripcion':1});
-            await models.inventario_esquema.populate(reg,{path:"codigoProducto._id.codigoConcentracion",select:{descripcion:1}})
+                { path: 'codigoBodega',     model: 'bodega' },
+                { path: 'codigoFabricante', model: 'fabricante' },
+                { path: 'codigoProveedor',  model: 'proveedor' },
+                { path: 'codigoUsuario',    model: 'usuario' },
+                { path: 'codigoProducto',   model: 'producto' },
+            ]).sort({ $natural: -1 });
+
             res.status(200).json(reg);
         } catch(e){
             res.status(500).send({
@@ -161,6 +159,7 @@ export default {
                 pvm:req.body.pvm,
                 punit:req.body.punit,
                 costoNeto:req.body.costoNeto,
+                costoNetoDescuento:req.body.costoNetoDescuento,
                 codigoUsuario:req.body.codigoUsuario,
                 codigoBodega :req.body.codigoBodega, 
                 codigoFabricante :req.body.codigoFabricante,

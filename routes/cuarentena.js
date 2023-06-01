@@ -6,7 +6,6 @@ import Controlador from '../controllers/cuarentena_controlador';
 const router=routerx();
 
 
- 
 router.post('/add',Controlador.add);
 router.get('/query',Controlador.query);
 router.get('/list',Controlador.list); 

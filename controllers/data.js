@@ -123,11 +123,12 @@ export default {
             const data = await models.data_esquema.findOne({_id:req.body._id})
             let val=0
             data.secuenciales.forEach(element => {
-                if (element.documento==req.body.documento) {
+                if (element.documento == req.body.documento) {
                   
-                    models.data_esquema
-                   .update({"secuenciales._id":element._id},{$set:{"secuenciales.$.secuencial":parseInt(req.body.numero)}},
-                   function (err,dat) {
+                    models.data_esquema.update(
+                        {"secuenciales._id":element._id},
+                        {$set:{"secuenciales.$.secuencial":parseInt(req.body.numero)}
+                    }, function (err,dat) {
                        if(err) return res.status(500).send({
                         message:'Ocurrió un error al actualizar el data_esquema.'+err
                     });
@@ -149,22 +150,27 @@ export default {
         }
     },
     contarFacturas: async (req,res,next) => {
-        try {
-            const fact = await models.facturacion.find({$and:[
-                {"codigoUsuario":req.query.codigoUsuario},
-              {"codigoDistribuidor":req.query.codigoDistribuidor},
-              {"estado":1}
-            ]}).count()
-            let secuencia = paddy(parseInt(fact+100),9)
-            res.status(200).json(secuencia);
-          
+        try{
+            const secuenciales = await models.data_esquema.find({$and:[
+                {"codigoUsuario": req.query.codigoUsuario},
+                {"codigoDistribuidor": req.query.codigoDistribuidor}
+            ]});
 
+            let secuencial = secuenciales[0].secuenciales.find( s => 
+                    s.documento == 'FACTURA' )
 
+            secuencial = paddy(parseInt( secuencial.secuencial ),9)
 
+            // const fact = await models.facturacion.find({$and:[
+            //     {"codigoUsuario":req.query.codigoUsuario},
+            //     {"codigoDistribuidor":req.query.codigoDistribuidor},
+            //     {"estado":1}
+            // ]}).count();
+            // let secuencia = paddy(parseInt(fact+100),9)
+            // console.log( secuencia );
+            res.status(200).json( secuencial );
         } catch(e){
-            res.status(500).send({
-                message:'Ocurrió un error al actualizar el data_esquema.'+e
-            });
+            res.status(500).send({ message:'Ocurrió un error al actualizar el data_esquema.' + e });
             next(e);
         }
     },

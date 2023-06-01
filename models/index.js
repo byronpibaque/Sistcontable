@@ -28,6 +28,8 @@ import cuentasporpagar from './cuentasporpagar'
 import cuentasporcobrar from './cuentasporcobrar'
 import egreso from './egreso';
 import facturacion from './facturacion';
+import Temp_Humedad from './tem_humed';
+import Acta_Entrega from './acta_entrega';
 export default {
     facturacion,
     cuentasporcobrar,
@@ -58,5 +60,7 @@ export default {
     concentracion_esquema,
     producto_esquema,
     inventario_esquema,
-    egreso
+    egreso,
+    Temp_Humedad,
+    Acta_Entrega
 } 
