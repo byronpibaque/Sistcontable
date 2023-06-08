@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 const Esquema = new Schema({
+  isActaEntrega: { type: Boolean, required: true },
   numComprobante: { type: String, required: true },
   ptoEmision:{type:Number,required:true},
   claveAcceso:{type:String},
@@ -64,7 +65,6 @@ const Esquema = new Schema({
 
     },
   ],
- 
   codigoUsuario: { type: Schema.ObjectId, ref: "usuarios", required: true },
   codigoCliente: { type: Schema.ObjectId, ref: "clientes", required: true },
   codigoDistribuidor: {
