@@ -159,7 +159,7 @@ export default {
             let secuencial = secuenciales[0].secuenciales.find( s => 
                     s.documento == 'FACTURA' )
 
-            secuencial = paddy(parseInt( secuencial.secuencial ),9)
+            secuencial = paddy(parseInt( secuencial.secuencial+1 ),9)
 
             // const fact = await models.facturacion.find({$and:[
             //     {"codigoUsuario":req.query.codigoUsuario},
