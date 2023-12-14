@@ -10,6 +10,8 @@ import mongoose from "mongoose";
 
 import router from "./routes";
 
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
 //Conexión a la base de datos MongoDB
 mongoose.Promise = global.Promise;
 // const dbUrl = 'mongodb://localhost:27017/dbSistemas';
@@ -58,3 +60,4 @@ if (process.env.NODE_ENV === "production") {
         );
     });
 }
+
