@@ -273,21 +273,5 @@ export default {
       next(e);
     }
   },
-  // AumentarNumComp: async (req, res, next) => {
-  //     try {
-  //         const reg = await models.facturacion.estimatedDocumentCount({codigoDistribuidor:req.query.codigoDistribuidor},function (err, count) {
-  //             if (err) return handleError(err);
-
-  //             let contadorEntero = parseInt(count) + 1
-  //             res.status(200).json(paddy(parseInt(contadorEntero), 9))
-
-  //         });
-
-  //     } catch (e) {
-  //         res.status(500).send({
-  //             message: 'Ocurrió un error'
-  //         });
-  //         next(e);
-  //     }
-  // },
+  
 };

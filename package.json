@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node -r esm index.js",
+    "start": "nodemon index.js --exec babel-node",
     "dev": "nodemon index.js --exec babel-node"
   },
   "keywords": [],
@@ -28,6 +28,7 @@
     "file": "^0.2.2",
     "filereader": "^0.10.3",
     "html-pdf": "^2.2.0",
+    "http-proxy-middleware": "^2.0.6",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.27.0",
     "mongo-xlsx": "^1.0.12",
@@ -41,9 +42,15 @@
     "xadesjs": "^2.0.18",
     "xml-crypto": "^1.5.3",
     "xmlbuilder": "^15.1.1",
-    "xmldom": "^0.3.0"
+    "xmldom": "^0.3.0",
+    "@babel/core": "^7.23.5",
+    "@babel/node": "^7.22.19",
+    "@babel/preset-env": "^7.23.5"
   },
   "devDependencies": {
+    "@babel/core": "^7.23.5",
+    "@babel/node": "^7.22.19",
+    "@babel/preset-env": "^7.23.5",
     "nodemo": "^1.0.0",
     "nodemon": "^2.0.7"
   }

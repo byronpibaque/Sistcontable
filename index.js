@@ -10,9 +10,10 @@ import mongoose from "mongoose";
 
 import router from "./routes";
 
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
 //Conexión a la base de datos MongoDB
 mongoose.Promise = global.Promise;
-
 const dbUrl =
     "mongodb+srv://byron:Byron9009@sistemaventas-crznc.mongodb.net/sistemacontable?retryWrites=true&w=majority";
 mongoose
@@ -35,7 +36,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
-
 if (process.env.NODE_ENV === "production") {
     app.use("/api", router);
     app.set("port", process.env.PORT || 777);
@@ -49,7 +49,7 @@ if (process.env.NODE_ENV === "production") {
     });
 } else {
     app.use("/api", router);
-    app.set("port", process.env.PORT || 35000);
+    app.set("port", process.env.PORT || 3000);
 
     app.listen(app.get("port"), () => {
         console.log(
@@ -57,3 +57,4 @@ if (process.env.NODE_ENV === "production") {
         );
     });
 }
+
