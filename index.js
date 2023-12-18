@@ -50,7 +50,7 @@ if (process.env.NODE_ENV === "production") {
     });
 } else {
     app.use("/api", router);
-    app.set("port", process.env.PORT || 35000);
+    app.set("port", process.env.PORT || 3000);
 
     app.listen(app.get("port"), () => {
         console.log(
