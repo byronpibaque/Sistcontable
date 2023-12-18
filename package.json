@@ -1,10 +1,10 @@
 {
   "name": "sistemacontable",
   "version": "1.0.0",
-  "description": "",
+  "description": "Servidor Prod V2",
   "main": "index.js",
   "scripts": {
-    "start": "node -r esm index.js",
+    "start": "node esm -r index.js",
     "dev": "nodemon index.js --exec babel-node"
   },
   "keywords": [],
