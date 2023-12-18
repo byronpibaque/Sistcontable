@@ -1,5 +1,5 @@
 import models from '../models';
-
+import comprasService from '../services/comprasService';
 function paddy(num, padlen, padchar) {
     var pad_char = typeof padchar !== 'undefined' ? padchar : '0';
     var pad = new Array(1 + padlen).join(pad_char);
@@ -70,7 +70,7 @@ async function eliminar(numComprobante,codigoDistribuidor) {
         console.log(e);
         return false
     } 
-} 
+}  
 async function disminuirStock(codigoArticulo,costoNeto1,pvm1,pvp1,punit1,fTotales) {
     let {fraccionesTotales} = await models.inventario_esquema.findOne({_id:codigoArticulo})
     let nfraccionesTotales = parseInt(fraccionesTotales)-parseInt(fTotales)
@@ -98,44 +98,50 @@ async function disminuirStock(codigoArticulo,costoNeto1,pvm1,pvp1,punit1,fTotale
         });
   }
      
-  }
+}
+
 export default {
     add: async (req,res,next) =>{
-        try {
-            req.body.detalles.forEach( async (detalle) => {
-                await models.inventario_esquema.findByIdAndUpdate( detalle._id, 
-                    { $set:{ fechaIngresoBodega: req.body.fechaIngresoBodega }
+            let numeroComp = (req.body.numComprobante).trim();
+            try {
+              const result = await comprasService.verificaNumComprobante(numeroComp);
+              if (result === true) {
+                throw new Error("Ya existe un registro con el mismo número de comprobantes");
+              } else {
+                req.body.detalles.forEach( async (detalle) => {
+                    await models.inventario_esquema.findByIdAndUpdate( detalle._id, 
+                        { $set:{ fechaIngresoBodega: req.body.fechaIngresoBodega }
+                    });
+                }); 
+                const reg = await models.compras.create(req.body);
+            
+                await models.cuarentenas.create({
+                  numComprobante: req.body.numComprobante,
+                  descripcion: req.body.descripcion,
+                  detalles: req.body.detalles,
+                  codigoUsuario: req.body.codigoUsuario,
+                  codigoDistribuidor: req.body.codigoDistribuidor,
+                  codigoBodega: req.body.codigoBodega,
+                  codigoProveedor: req.body.codigoProveedor,
                 });
-            });
-            //Guardar Compra
-            const reg = await models.compras.create(req.body);
-
-            await models.cuarentenas.create({                
-              numComprobante:       req.body.numComprobante,
-              descripcion:          req.body.descripcion,
-              detalles:             req.body.detalles,
-              codigoUsuario:        req.body.codigoUsuario,
-              codigoDistribuidor:   req.body.codigoDistribuidor,
-              codigoBodega:         req.body.codigoBodega,  
-              codigoProveedor:      req.body.codigoProveedor  
-            });
-
-            await models.asignacionPercha.create({
-              numComprobante:req.body.numComprobante,
-              descripcion:req.body.descripcion,
-              detalles:req.body.detalles,
-              codigoUsuario:req.body.codigoUsuario,
-              codigoDistribuidor:req.body.codigoDistribuidor,
-              codigoBodega:req.body.codigoBodega  
-            });
-
-            res.status(200).json( reg );
-        } catch (e){
-            res.status(500).send({
-                message:'Ocurrió un error al intentar agregar compras.'+e
-            });
-            next(e);
-        } 
+            
+                await models.asignacionPercha.create({
+                  numComprobante: numeroComp,
+                  descripcion: req.body.descripcion,
+                  detalles: req.body.detalles,
+                  codigoUsuario: req.body.codigoUsuario,
+                  codigoDistribuidor: req.body.codigoDistribuidor,
+                  codigoBodega: req.body.codigoBodega,
+                });
+            
+                res.status(200).json(reg);
+              }
+            } catch (err) {
+              res.status(500).send({
+                message:  err.message,
+              });
+              next(err);
+            }
     },
     query: async (req,res,next) => {
         try {
