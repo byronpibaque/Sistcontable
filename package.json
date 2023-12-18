@@ -4,7 +4,7 @@
   "description": "Servidor Prod V2",
   "main": "index.js",
   "scripts": {
-    "start": "node esm -r index.js",
+    "start": "node -r esm index.js",
     "dev": "nodemon index.js --exec babel-node"
   },
   "keywords": [],
