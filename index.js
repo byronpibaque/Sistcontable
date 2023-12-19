@@ -55,4 +55,7 @@ if (process.env.NODE_ENV === "production") {
             "Servidor de NojdeJS levantado en el puerto: " + app.get("port")
         );
     });
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(__dirname, "public", "index.html"));
+    });
 }
