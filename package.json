@@ -1,7 +1,7 @@
 {
   "name": "sistemacontable",
   "version": "1.0.0",
-  "description": "",
+  "description": "servidor v2",
   "main": "index.js",
   "scripts": {
     "start": "node -r esm index.js",
@@ -40,7 +40,8 @@
     "xadesjs": "^2.0.18",
     "xml-crypto": "^1.5.3",
     "xmlbuilder": "^15.1.1",
-    "xmldom": "^0.3.0"
+    "xmldom": "^0.3.0",
+    "axios": "^0.19.2"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.22.20",
