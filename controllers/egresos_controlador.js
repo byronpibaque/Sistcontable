@@ -28,6 +28,7 @@ async function disminuirStock(codigoArticulo,fTotales) {
             { _id: codigoArticulo }, { fraccionesTotales: nfraccionesTotales }
             ).then(async (result) => { return result })
             .catch((err) => { return err });
+
     }else {
         await models.inventario_esquema.findByIdAndUpdate(
             {_id:codigoArticulo},{ fraccionesTotales: 0, percha: "", numComprobante:""})
