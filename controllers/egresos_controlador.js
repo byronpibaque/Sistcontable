@@ -200,12 +200,12 @@ export default {
                                 fechaFactura: data.fechaFactura,
                                 descripcion: data.descripcion,
                             }
-                            // data.detalles.forEach(element => {
-                            //     const disminuir = disminuirStock(element._id,element.fraccionesTotales);
-                            //     disminuir.then((result) => { res.status(200).json("ok"); }).catch((err) => {
-                            //      return err   
-                            //     });
-                            // });
+                            data.detalles.forEach(element => {
+                                const disminuir = disminuirStock(element._id,element.fraccionesTotales);
+                                disminuir.then((result) => { res.status(200).json("ok"); }).catch((err) => {
+                                 return err
+                                });
+                            });
                             if (e.unidadTiempo=="NINGUNO") {
                                 res.status(200).json("ok");
                             }else{
