@@ -10,6 +10,9 @@ import mongoose from "mongoose";
 
 import router from "./routes";
 
+// Carga las variables del archivo .env
+require('dotenv').config();
+
 //Conexión a la base de datos MongoDB
 mongoose.Promise = global.Promise;
 const dbUrl =
@@ -48,7 +51,7 @@ if (process.env.NODE_ENV === "production") {
     });
 } else {
     app.use("/api", router);
-    app.set("port", process.env.PORT || 3000);
+    app.set("port", process.env.PORT);
 
     app.listen(app.get("port"), () => {
         console.log(
